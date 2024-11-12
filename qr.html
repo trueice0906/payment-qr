@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+</head>
+<style>
+    img {
+        display: block;
+        /* Make the image a block-level element */
+        margin-left: auto;
+        /* Horizontally center the image */
+        margin-right: auto;
+        /* Horizontally center the image */
+    }
+
+    /* Optional: Vertically center the image if needed */
+    body,
+    html {
+        height: 100%;
+        /* Full height of the viewport */
+        margin: 0;
+        /* Remove default margin */
+        display: flex;
+        /* Enable flexbox */
+        justify-content: center;
+        /* Center horizontally */
+        align-items: center;
+        /* Center vertically */
+    }
+</style>
+
+<body>
+    <div id="qr-code"></div>
+</body>
+<script>
+    async function generateQRCode() {
+        const url = "https://ca-dev.nonprod-krispay.com/online-payment?sign=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im9ubGluZS1wYXltZW50LzNmYzA0NDZkMzI0YjQ1ZGRhMjM2ZGVkZjVhNTJlYjI2In0.eyJySWQiOiI2NmNjMzAzNDY3OTY1NzY2ZjI2MGRhOWUiLCJtTmFtZSI6Ik1lb21pIENhdCBDYWZlIiwibUlkIjoiNjVmOTk0MWVkNjMyM2VlMzgzYTIxYmQ2IiwibUxnIjoiaHR0cHM6Ly9kZXYtc3RhdGljLWNvbnRlbnQubm9ucHJvZC1rcmlzcGF5LmNvbS9ub24tYml6LWtyaXNwYXkvNDkwOTI1NzY5MzQwMTkwOTQtMjEwNTY1NDUxMTAyNjQ4MjQtMTAuanBnIiwibVJlZiI6ImFiYzEyMyIsImVhcm4iOiJZIiwiYnVybiI6IlkiLCJlQWZmUnQiOjIsImVBbXRCbGsiOjEsInB5Q3JkIjoiWSIsInN1cENyZHMiOiJWTSIsIndwbUlkIjoiYzBmODBiMmYyN2IyMmFmIiwicEFtdCI6MzAsInBDdXIiOiJTR0QiLCJpc3MiOiJLUCIsImF1ZCI6Ik1DMiIsInN1YiI6IktyaXMrIFBheW1lbnQiLCJ0eFJlZiI6Ik1DMl90aEZkRzFzaFB4M3RRNTFpSlV6T0giLCJ2b20iOjAuMDA2NjY2NjcsInFyRXhwIjoxNzMwOTUwMjU5LCJpYXQiOjE3MzA5NDY2NTl9.BCnX4tETxe8ca7iVc1HMzdnqupqIG8VS_dTaGSkSXzXdxOjqFQPEUmlTOdFzDuw-P3GJ0gAhTQyLGQNFoZXuaQ"
+
+        try {
+            // Create a canvas element dynamically
+            const canvas = document.createElement('canvas');
+
+            // Clear any existing content
+            const qrCodeDiv = document.getElementById("qr-code");
+            qrCodeDiv.innerHTML = ''; // Clear previous QR code if any
+
+            // Append the canvas to the div
+            qrCodeDiv.appendChild(canvas);
+
+            // Generate QR code and render it to the canvas
+            await QRCode.toCanvas(canvas, url, {
+                width: 200,
+                height: 200,
+                correctLevel: 'L'
+            });
+        } catch (error) {
+            console.error('Error generating QR code', error);
+        }
+    }
+
+    generateQRCode()
+</script>
+
+</html>

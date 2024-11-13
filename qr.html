@@ -17,6 +17,15 @@
         /* Horizontally center the image */
     }
 
+    button {
+        margin-top: 60px;
+        background-color: blueviolet;
+        border: none;
+        color: white;
+        border-radius: 5px;
+        padding: 20px 50px;
+    }
+
     /* Optional: Vertically center the image if needed */
     body,
     html {
@@ -30,13 +39,24 @@
         /* Center horizontally */
         align-items: center;
         /* Center vertically */
+        flex-direction: column;
     }
 </style>
 
 <body>
     <div id="qr-code"></div>
+    <div>
+        <button onclick="changeQRSize(300)">300</button>
+        <button onclick="changeQRSize(400)">400</button>
+    </div>
 </body>
 <script>
+    let qrSize = 300;
+    function changeQRSize(size) {
+        qrSize = size;
+        generateQRCode();
+    }
+
     async function generateQRCode() {
         const url = "https://ca-dev.nonprod-krispay.com/online-payment?sign=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im9ubGluZS1wYXltZW50LzNmYzA0NDZkMzI0YjQ1ZGRhMjM2ZGVkZjVhNTJlYjI2In0.eyJySWQiOiI2NmNjMzAzNDY3OTY1NzY2ZjI2MGRhOWUiLCJtTmFtZSI6Ik1lb21pIENhdCBDYWZlIiwibUlkIjoiNjVmOTk0MWVkNjMyM2VlMzgzYTIxYmQ2IiwibUxnIjoiaHR0cHM6Ly9kZXYtc3RhdGljLWNvbnRlbnQubm9ucHJvZC1rcmlzcGF5LmNvbS9ub24tYml6LWtyaXNwYXkvNDkwOTI1NzY5MzQwMTkwOTQtMjEwNTY1NDUxMTAyNjQ4MjQtMTAuanBnIiwibVJlZiI6ImFiYzEyMyIsImVhcm4iOiJZIiwiYnVybiI6IlkiLCJlQWZmUnQiOjIsImVBbXRCbGsiOjEsInB5Q3JkIjoiWSIsInN1cENyZHMiOiJWTSIsIndwbUlkIjoiYzBmODBiMmYyN2IyMmFmIiwicEFtdCI6MzAsInBDdXIiOiJTR0QiLCJpc3MiOiJLUCIsImF1ZCI6Ik1DMiIsInN1YiI6IktyaXMrIFBheW1lbnQiLCJ0eFJlZiI6Ik1DMl90aEZkRzFzaFB4M3RRNTFpSlV6T0giLCJ2b20iOjAuMDA2NjY2NjcsInFyRXhwIjoxNzMwOTUwMjU5LCJpYXQiOjE3MzA5NDY2NTl9.BCnX4tETxe8ca7iVc1HMzdnqupqIG8VS_dTaGSkSXzXdxOjqFQPEUmlTOdFzDuw-P3GJ0gAhTQyLGQNFoZXuaQ"
 
@@ -53,8 +73,8 @@
 
             // Generate QR code and render it to the canvas
             await QRCode.toCanvas(canvas, url, {
-                width: 300,
-                height: 300,
+                width: qrSize,
+                height: qrSize,
                 correctLevel: 'L'
             });
         } catch (error) {

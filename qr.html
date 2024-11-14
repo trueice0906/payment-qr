@@ -1,90 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html itemscope itemtype="http://schema.org/Product">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=Utf-8">
+    <script type="text/javascript" src="./qrcode.js"></script>
+    <script type="text/javascript" src="../qrcode_SJIS.js"></script>
+    <script type="text/javascript" src="./sample.js"></script>
+    <link rel="stylesheet" href="assets/style.css" type="text/css" />
+    <title itemprop="name">QR Code Generator</title>
 </head>
-<style>
-    img {
-        display: block;
-        /* Make the image a block-level element */
-        margin-left: auto;
-        /* Horizontally center the image */
-        margin-right: auto;
-        /* Horizontally center the image */
-    }
 
-    button {
-        margin-top: 60px;
-        background-color: blueviolet;
-        border: none;
-        color: white;
-        border-radius: 5px;
-        padding: 20px 50px;
-    }
+<body onload="body_loadHander()">
 
-    /* Optional: Vertically center the image if needed */
-    body,
-    html {
-        height: 100%;
-        /* Full height of the viewport */
-        margin: 0;
-        /* Remove default margin */
-        display: flex;
-        /* Enable flexbox */
-        justify-content: center;
-        /* Center horizontally */
-        align-items: center;
-        /* Center vertically */
-        flex-direction: column;
-    }
-</style>
+    <a style="position: absolute; right: 0px; top: 0px;" href="https://github.com/kazuhikoarase/qrcode-generator"><img
+            width="149" height="149"
+            src="https://github.blog/wp-content/uploads/2008/12/forkme_right_darkblue_121621.png?resize=149%2C149"
+            class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a>
+    <img itemprop="image" src="assets/qrcode.png" style="display:none;" />
 
-<body>
-    <div id="qr-code"></div>
-    <div>
-        <button onclick="changeQRSize(300)">300</button>
-        <button onclick="changeQRSize(350)">350</button>
-        <button onclick="changeQRSize(400)">400</button>
-    </div>
+    <h1>QR Code Generator</h1>
+
+    <div itemprop="description">QR Code Generator implementation in JavaScript, Java and more.</div>
+
+    <div class="section">
+
+        <form name="qrForm">
+            <span>TypeNumber:</span>
+            <select name="t"></select>
+            <span>ErrorCorrectionLevel:</span>
+            <select name="e">
+                <option value="L">L(7%)</option>
+                <option value="M" selected="selected">M(15%)</option>
+                <option value="Q">Q(25%)</option>
+                <option value="H">H(30%)</option>
+            </select>
+            <span>Mode:</span>
+            <select name="m">
+                <option value="Numeric">Numeric</option>
+                <option value="Alphanumeric">Alphanumeric</option>
+                <option value="Byte" selected>Byte</option>
+                <option value="Kanji">Kanji</option>
+            </select>
+            <span>Multibyte:</span>
+            <select name="mb">
+                <option value="default">None</option>
+                <option value="SJIS">SJIS</option>
+                <option value="UTF-8" selected>UTF-8</option>
+            </select>
+            <br />
+            <textarea name="msg" rows="10" cols="40">https://ca-dev.nonprod-krispay.com/online-payment?sign=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im9ubGluZS1wYXltZW50LzNmYzA0NDZkMzI0YjQ1ZGRhMjM2ZGVkZjVhNTJlYjI2In0.eyJySWQiOiI2NmNjMzAzNDY3OTY1NzY2ZjI2MGRhOWUiLCJtTmFtZSI6Ik1lb21pIENhdCBDYWZlIiwibUlkIjoiNjVmOTk0MWVkNjMyM2VlMzgzYTIxYmQ2IiwibUxnIjoiaHR0cHM6Ly9kZXYtc3RhdGljLWNvbnRlbnQubm9ucHJvZC1rcmlzcGF5LmNvbS9ub24tYml6LWtyaXNwYXkvNDkwOTI1NzY5MzQwMTkwOTQtMjEwNTY1NDUxMTAyNjQ4MjQtMTAuanBnIiwibVJlZiI6ImFiYzEyMyIsImVhcm4iOiJZIiwiYnVybiI6IlkiLCJlQWZmUnQiOjIsImVBbXRCbGsiOjEsInB5Q3JkIjoiWSIsInN1cENyZHMiOiJWTSIsIndwbUlkIjoiYzBmODBiMmYyN2IyMmFmIiwicEFtdCI6MzAsInBDdXIiOiJTR0QiLCJpc3MiOiJLUCIsImF1ZCI6Ik1DMiIsInN1YiI6IktyaXMrIFBheW1lbnQiLCJ0eFJlZiI6Ik1DMl90aEZkRzFzaFB4M3RRNTFpSlV6T0giLCJ2b20iOjAuMDA2NjY2NjcsInFyRXhwIjoxNzMwOTUwMjU5LCJpYXQiOjE3MzA5NDY2NTl9.BCnX4tETxe8ca7iVc1HMzdnqupqIG8VS_dTaGSkSXzXdxOjqFQPEUmlTOdFzDuw-P3GJ0gAhTQyLGQNFoZXuaQ</textarea>
+            <br />
+            <input type="button" value="update" onclick="update_qrcode()" />
+            <div id="qr"></div>
+        </form>
+
 </body>
-<script>
-    let qrSize = 300;
-    function changeQRSize(size) {
-        qrSize = size;
-        generateQRCode();
-    }
-
-    async function generateQRCode() {
-        const url = "https://ca-dev.nonprod-krispay.com/online-payment?sign=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im9ubGluZS1wYXltZW50LzNmYzA0NDZkMzI0YjQ1ZGRhMjM2ZGVkZjVhNTJlYjI2In0.eyJySWQiOiI2NmNjMzAzNDY3OTY1NzY2ZjI2MGRhOWUiLCJtTmFtZSI6Ik1lb21pIENhdCBDYWZlIiwibUlkIjoiNjVmOTk0MWVkNjMyM2VlMzgzYTIxYmQ2IiwibUxnIjoiaHR0cHM6Ly9kZXYtc3RhdGljLWNvbnRlbnQubm9ucHJvZC1rcmlzcGF5LmNvbS9ub24tYml6LWtyaXNwYXkvNDkwOTI1NzY5MzQwMTkwOTQtMjEwNTY1NDUxMTAyNjQ4MjQtMTAuanBnIiwibVJlZiI6ImFiYzEyMyIsImVhcm4iOiJZIiwiYnVybiI6IlkiLCJlQWZmUnQiOjIsImVBbXRCbGsiOjEsInB5Q3JkIjoiWSIsInN1cENyZHMiOiJWTSIsIndwbUlkIjoiYzBmODBiMmYyN2IyMmFmIiwicEFtdCI6MzAsInBDdXIiOiJTR0QiLCJpc3MiOiJLUCIsImF1ZCI6Ik1DMiIsInN1YiI6IktyaXMrIFBheW1lbnQiLCJ0eFJlZiI6Ik1DMl90aEZkRzFzaFB4M3RRNTFpSlV6T0giLCJ2b20iOjAuMDA2NjY2NjcsInFyRXhwIjoxNzMwOTUwMjU5LCJpYXQiOjE3MzA5NDY2NTl9.BCnX4tETxe8ca7iVc1HMzdnqupqIG8VS_dTaGSkSXzXdxOjqFQPEUmlTOdFzDuw-P3GJ0gAhTQyLGQNFoZXuaQ"
-
-        try {
-            // Create a canvas element dynamically
-            const canvas = document.createElement('canvas');
-
-            // Clear any existing content
-            const qrCodeDiv = document.getElementById("qr-code");
-            qrCodeDiv.innerHTML = ''; // Clear previous QR code if any
-
-            // Append the canvas to the div
-            qrCodeDiv.appendChild(canvas);
-
-            // Generate QR code and render it to the canvas
-            await QRCode.toCanvas(canvas, url, {
-                width: qrSize,
-                height: qrSize,
-                correctLevel: 'L',
-                useSVG: true
-            });
-        } catch (error) {
-            console.error('Error generating QR code', error);
-        }
-    }
-
-    generateQRCode()
-</script>
 
 </html>

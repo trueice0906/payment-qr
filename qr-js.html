@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="
+    https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<style>
+    body,
+    html {
+        height: 100%;
+        width: 100%;
+        /* Full height of the viewport */
+        margin: 0;
+        /* Remove default margin */
+        display: flex;
+        /* Enable flexbox */
+        /* Center horizontally */
+    }
+
+    .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+
+    button {
+        color: white;
+        padding: 16px;
+        margin-right: 12px;
+        font-size: 16px;
+        border-radius: 60px;
+        border: none;
+    }
+
+    .logo button {
+        background-color: #00266B;
+    }
+
+    .size button {
+        background-color: #000000;
+    }
+
+    .dropbtn {
+        background-color: #1991EB;
+        color: white;
+        padding: 16px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        border-radius: 60px;
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+    }
+
+    .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #f1f1f1
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    .dropdown:hover .dropbtn {
+        background-color: #00266B;
+    }
+
+    h3 {
+        margin-left: 10px;
+        margin-bottom: 10px;
+    }
+</style>
+
+<body>
+    <div class="container">
+        <div class="wrapper">
+            <div class="logo" style="margin-bottom: 2rem;">
+                <h3>Logo</h3>
+                <button onclick="renderQRWithLogo(true)">with Logo</button>
+                <button onclick="renderQRWithLogo(false)">without Logo</button>
+            </div>
+            <div style="margin-bottom: 2rem;">
+                <h3>Error correction level</h3>
+                <div class="dropdown">
+                    <button class="dropbtn">correction level</button>
+                    <div class="dropdown-content">
+                        <a onclick="selectECL('L')">L</a>
+                        <a onclick="selectECL('M')">M</a>
+                        <a onclick="selectECL('H')">H</a>
+                    </div>
+                </div>
+            </div>
+            <div class="size" style="margin-bottom: 2rem;">
+                <h3>Size</h3>
+                <button onclick="selectSize(300)">300 X 300</button>
+                <button onclick="selectSize(350)">350 X 350</button>
+                <button onclick="selectSize(400)">400 X 400</button>
+            </div>
+        </div>
+        <div id="qr-code"></div>
+    </div>
+</body>
+<script>
+    const url = "https://ca-dev.nonprod-krispay.com/online-payment?sign=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im9ubGluZS1wYXltZW50LzNmYzA0NDZkMzI0YjQ1ZGRhMjM2ZGVkZjVhNTJlYjI2In0.eyJySWQiOiI2NmNjMzAzNDY3OTY1NzY2ZjI2MGRhOWUiLCJtTmFtZSI6Ik1lb21pIENhdCBDYWZlIiwibUlkIjoiNjVmOTk0MWVkNjMyM2VlMzgzYTIxYmQ2IiwibUxnIjoiaHR0cHM6Ly9kZXYtc3RhdGljLWNvbnRlbnQubm9ucHJvZC1rcmlzcGF5LmNvbS9ub24tYml6LWtyaXNwYXkvNDkwOTI1NzY5MzQwMTkwOTQtMjEwNTY1NDUxMTAyNjQ4MjQtMTAuanBnIiwibVJlZiI6ImFiYzEyMyIsImVhcm4iOiJZIiwiYnVybiI6IlkiLCJlQWZmUnQiOjIsImVBbXRCbGsiOjEsInB5Q3JkIjoiWSIsInN1cENyZHMiOiJWTSIsIndwbUlkIjoiYzBmODBiMmYyN2IyMmFmIiwicEFtdCI6MzAsInBDdXIiOiJTR0QiLCJpc3MiOiJLUCIsImF1ZCI6Ik1DMiIsInN1YiI6IktyaXMrIFBheW1lbnQiLCJ0eFJlZiI6Ik1DMl90aEZkRzFzaFB4M3RRNTFpSlV6T0giLCJ2b20iOjAuMDA2NjY2NjcsInFyRXhwIjoxNzMwOTUwMjU5LCJpYXQiOjE3MzA5NDY2NTl9.BCnX4tETxe8ca7iVc1HMzdnqupqIG8VS_dTaGSkSXzXdxOjqFQPEUmlTOdFzDuw-P3GJ0gAhTQyLGQNFoZXuaQ"
+    let withlogo = false;
+    let errorCorrectionLevel = 'L';
+    let size = 300;
+
+    function renderQRWithLogo(val) {
+        withlogo = val;
+        renderImage();
+    }
+
+    function selectECL(v) {
+        errorCorrectionLevel = v;
+        renderImage();
+    }
+
+    function selectSize(v) {
+        size = v;
+        renderImage();
+    }
+
+    function drawCenterImage(qrCanvas, centerImage, sizeFactor) {
+        const canvasSize = qrCanvas.height;
+        const centerSize = canvasSize * sizeFactor;
+        const offset = (canvasSize - centerSize) / 2;
+        const ctx = qrCanvas.getContext("2d");
+        ctx.drawImage(centerImage, 0, 0, centerImage.width, centerImage.height, offset, offset, centerSize, centerSize);
+    }
+
+    function renderImage() {
+        const qrContainer = document.getElementById("qr-code");
+        qrContainer.innerHTML = "";
+        const icon = new Image();
+        icon.onload = function () {
+            const qrcode = new QRCode(qrContainer, {
+                text: url,
+                width: size,
+                height: size,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel[errorCorrectionLevel]
+            });
+
+            if (withlogo) {
+                // Draw the image in the center of the QR code once it's generated
+                const qrCanvas = qrContainer.querySelector("canvas");
+                if (qrCanvas) {
+                    drawCenterImage(qrCanvas, icon, 0.2);
+                } else {
+                    console.error("QR code canvas not found.");
+                }
+            }
+        };
+        icon.onerror = function () {
+            console.error("Failed to load the center image.");
+        };
+        icon.src = './logo.jpg';
+    }
+    renderImage();
+</script>
+
+</html>
